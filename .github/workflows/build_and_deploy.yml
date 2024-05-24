@@ -1,0 +1,26 @@
+name: Build and Deploy
+on: [push]
+permissions:
+  contents: write
+jobs:
+  build-and-deploy:
+    concurrency: ci-${{ github.ref }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v4
+
+      - name: Install and Build 🔧
+        run: |
+          npm ci
+          npm run build
+        env:
+          VITE_API_KEY: ${{ secrets.VITE_API_KEY }}
+          VITE_PROJECT_ID: ${{ secrets.VITE_PROJECT_ID }}
+          VITE_APP_ID: ${{ secrets.VITE_APP_ID }}
+          VITE_RTDB_URL: ${{ secrets.VITE_RTDB_URL }}
+
+      - name: Deploy 🚀
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: dist
