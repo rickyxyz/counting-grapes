@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { getDatabase, increment, ref, set } from "firebase/database";
+import { onValue, getDatabase, increment, ref, set } from "firebase/database";
 
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_API_KEY,
@@ -10,14 +10,21 @@ const firebaseConfig = {
 
 const firebaseApp = initializeApp(firebaseConfig);
 
-const database = getDatabase(firebaseApp);
+const rtdb = getDatabase(firebaseApp);
 
 function incrementRTDB(name: string): void {
-  set(ref(database, `Counter/${name}`), increment(1));
+  set(ref(rtdb, `Counter/${name}`), increment(1));
+}
+
+function syncRTDB(name: string, callback: (data: any) => void) {
+  onValue(ref(rtdb, `Counter/${name}`), (snapshot: any) => {
+    const data = snapshot.val();
+    callback(data);
+  });
 }
 
 const firebase = {
-  database,
+  syncRTDB,
   incrementRTDB,
 };
 
