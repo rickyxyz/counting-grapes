@@ -1,17 +1,9 @@
-import firebase from "./firebase";
+import Card from "./card";
+import users from "./const";
 import "./style.css";
 
-const number = document.querySelector("#number")!;
-const buttonAdd = document.querySelector("#add")! as HTMLButtonElement;
+const cards = users.map((name) => Card(name));
 
-const { syncRTDB, incrementRTDB } = firebase;
+const app = document.getElementById("app")! as HTMLDivElement;
 
-syncRTDB("r", updateCounter);
-
-function updateCounter(newValue: number) {
-  number.textContent = newValue.toString();
-}
-
-buttonAdd.onclick = () => {
-  incrementRTDB("r");
-};
+app.append(...cards);
