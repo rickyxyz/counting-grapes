@@ -11,6 +11,8 @@ export default function Card(name: string) {
   nameElement.textContent = name;
   buttonAdd.textContent = "+";
 
+  card.classList.add("card");
+
   function updateCounter(newValue: number) {
     number.textContent = newValue.toString();
   }

@@ -23,7 +23,7 @@ body {
 }
 
 h1 {
-  font-size: 3rem;
+  font-size: 3.2em;
   line-height: 1.1;
 }
 
@@ -31,7 +31,6 @@ h1 {
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
-  gap: 2rem;
 }
 
 span {
@@ -55,13 +54,21 @@ button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
-
 .card_container {
   display: flex;
   flex-direction: row;
-  flex-wrap: wrap;
+  gap: 1rem;
 }
-
+.card {
+  background: gray;
+  border-radius: 10px;
+  padding: 1rem 2rem;
+  display: flex;
+  flex-direction: column;
+  min-width: 80px;
+  align-items: center;
+  overflow: hidden;
+}
 @media (prefers-color-scheme: light) {
   :root {
     color: #0b241c;
