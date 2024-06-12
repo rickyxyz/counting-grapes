@@ -1,3 +1,5 @@
-export default {
-  base: "counting-grapes",
-};
+import { defineConfig } from "vite";
+
+export default defineConfig(({ mode }) => ({
+  base: mode === "production" ? "counting-grapes" : "",
+}));
