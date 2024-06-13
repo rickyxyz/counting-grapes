@@ -1,17 +1,30 @@
 name: Build and Deploy
 on:
   push:
-    branches:
-      - main
+    branches: ['main']
+  workflow_dispatch:
+
 permissions:
-  contents: write
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: 'pages'
+  cancel-in-progress: true
+
 jobs:
   build-and-deploy:
-    concurrency: ci-${{ github.ref }}
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.output.page_url }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout 🛎️
         uses: actions/checkout@v4
+        
+      - name: Setup Node
+        uses: actions/setup-node@v4
 
       - name: Install and Build 🔧
         run: |
@@ -23,7 +36,13 @@ jobs:
           VITE_APP_ID: ${{ secrets.VITE_APP_ID }}
           VITE_RTDB_URL: ${{ secrets.VITE_RTDB_URL }}
 
-      - name: Deploy 🚀
-        uses: JamesIves/github-pages-deploy-action@v4
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload Artifact
+        uses: actions/upload-pages-artifact@v3
         with:
-          folder: dist
+          path: './dist'
+
+      - name: Deploy 🚀
+        uses: actions/deploy-pages@v4 
