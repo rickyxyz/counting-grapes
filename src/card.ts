@@ -1,6 +1,6 @@
 import firebase from "./firebase";
 
-const { syncRTDB, incrementRTDB } = firebase;
+const { syncRTDB, incrementRTDB, createFirestoreTransaction } = firebase;
 
 export default function Card(name: string) {
   const card = document.createElement("div");
@@ -20,6 +20,7 @@ export default function Card(name: string) {
   syncRTDB(name, updateCounter);
   buttonAdd.onclick = () => {
     incrementRTDB(name);
+    createFirestoreTransaction(name);
   };
 
   card.append(nameElement, number, buttonAdd);
